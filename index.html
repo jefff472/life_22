@@ -90,17 +90,7 @@
       border-radius: 2px;
       overflow: hidden;
       z-index: 2;
-      transition: opacity 0.8s ease;
-    }
-    
-    /* El Tulipán de portada */
-    .polaroid-image::before {
-      content: '🌷';
-      font-size: 70px;
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+      transition: opacity 0.8s ease; 
     }
 
     /* Texto de instrucción al frente de la foto */
@@ -201,8 +191,8 @@
       <p>Y eso es lo que quiero contigo: una vida que nos haga sentir orgullosos de haberla vivido."</p>
     </div>
 
-    <!-- Parte Frontal (Portada con el Tulipán que se desvanece) -->
-    <div class="polaroid-image">
+        <!-- Parte Frontal (Ahora con la foto de ustedes) -->
+    <div class="polaroid-image" style="background-image: url('pequenos.jpeg'); background-size: cover; background-position: center;">
       <div class="hint">Mantén presionado</div>
     </div>
 
@@ -267,4 +257,5 @@
 
 </body>
 </html>
+
 
