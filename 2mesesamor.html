@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para Tami</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #0a0b16;
+      --bg-light: #1c1a35;
+      --accent: #ff85a2;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at bottom, var(--bg-light) 0%, var(--bg-dark) 100%);
+      font-family: 'Quicksand', sans-serif;
+      overflow: hidden;
+      perspective: 1000px;
+    }
+
+    /* === CIELO ESTRELLADO (Fondo) === */
+    .stars {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .star {
+      position: absolute;
+      background-color: #fff;
+      border-radius: 50%;
+      animation: twinkle infinite alternate;
+    }
+    @keyframes twinkle {
+      0% { opacity: 0.2; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 8px #fff; }
+    }
+
+    /* === LA POLAROID === */
+    .polaroid-container {
+      position: relative;
+      z-index: 10;
+      width: 340px; /* Un poco más ancha para que quepa bien tu texto */
+      height: 480px; /* Un poco más alta */
+      background: #fdfdfd;
+      padding: 15px 15px 40px 15px;
+      border-radius: 4px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 5px 15px rgba(0,0,0,0.2);
+      transform: rotate(-3deg);
+      transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+      cursor: pointer;
+    }
+
+    /* Animación flotante cuando nadie la toca */
+    .polaroid-container {
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(-3deg); }
+      50% { transform: translateY(-15px) rotate(-1deg); }
+      100% { transform: translateY(0px) rotate(-3deg); }
+    }
+
+    /* Cuando el usuario toca/pasa el mouse sobre la foto */
+    .polaroid-container:hover, 
+    .polaroid-container:active,
+    .polaroid-container.active {
+      transform: rotate(0deg) scale(1.05) translateY(-10px);
+      animation: none;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 40px rgba(255, 133, 162, 0.3);
+    }
+
+    /* La imagen frontal de la Polaroid */
+    .polaroid-image {
+      position: absolute;
+      top: 15px; left: 15px; right: 15px; bottom: 70px;
+      background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+      border-radius: 2px;
+      overflow: hidden;
+      z-index: 2;
+      transition: opacity 0.8s ease;
+    }
+    
+    /* El Tulipán de portada */
+    .polaroid-image::before {
+      content: '🌷';
+      font-size: 70px;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    }
+
+    /* Texto de instrucción al frente de la foto */
+    .hint {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: rgba(255,255,255,0.9);
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      animation: pulse-text 2s infinite;
+    }
+    @keyframes pulse-text {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    /* === TUS PALABRAS ESCRITAS A MANO === */
+    .secret-text {
+      position: absolute;
+      top: 15px; left: 15px; right: 15px; bottom: 70px;
+      background: #fdfdfd;
+      padding: 10px 15px;
+      border-radius: 2px;
+      z-index: 1;
+      font-family: 'Caveat', cursive; /* Tipografía tipo tinta */
+      color: #2c2c2c;
+      font-size: 19px; /* Tamaño ajustado para que quepa todo perfecto */
+      line-height: 1.35;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .secret-text p {
+      margin-bottom: 8px; /* Separación entre tus ideas */
+    }
+
+    /* Efecto de desaparición de la portada para revelar tu texto */
+    .polaroid-container:hover .polaroid-image,
+    .polaroid-container.active .polaroid-image {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* La dedicatoria abajo en el borde blanco de la Polaroid */
+    .caption {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-family: 'Caveat', cursive;
+      font-size: 28px;
+      color: #1a1a1a;
+      font-weight: 700;
+    }
+
+    .heart-icon {
+      color: var(--accent);
+      display: inline-block;
+      animation: beat 1s infinite alternate;
+    }
+    @keyframes beat {
+      to { transform: scale(1.2); }
+    }
+
+    @media (max-width: 400px) {
+      .polaroid-container {
+        width: 310px;
+        height: 460px;
+      }
+      .secret-text { font-size: 17.5px; padding: 5px 10px; }
+      .caption { font-size: 24px; bottom: 15px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Estrellas de fondo -->
+  <div class="stars" id="stars-container"></div>
+
+  <!-- Foto Polaroid -->
+  <div class="polaroid-container" id="polaroid">
+    
+    <!-- Parte Trasera (Tus Palabras Exactas) -->
+    <div class="secret-text">
+      <p>"Amarte no es algo que me pase solo cuando todo es bonito...</p>
+      <p>Te amo en los días difíciles, cuando estamos cansados, cuando no encontramos las palabras exactas.</p>
+      <p>Porque amar también es elegir, y yo te elijo cada día. Te sigo eligiendo con tus virtudes, tus errores, tus sueños y tus miedos.</p>
+      <p>Porque contigo entendí que el amor no es solo sentir... es cuidar, respetar, crecer y construir algo que valga la pena.</p>
+      <p>Y eso es lo que quiero contigo: una vida que nos haga sentir orgullosos de haberla vivido."</p>
+    </div>
+
+    <!-- Parte Frontal (Portada con el Tulipán que se desvanece) -->
+    <div class="polaroid-image">
+      <div class="hint">Mantén presionado</div>
+    </div>
+
+    <!-- Pie de foto de la Polaroid -->
+    <div class="caption">
+      Para ti, vida mia<span class="heart-icon">♥</span>
+    </div>
+  </div>
+
+  <!-- Audio: Pon aquí la ruta de tu canción -->
+  <audio id="bgm" src="assets/audio/cancion.mp3" loop></audio>
+
+  <script>
+    // Generar estrellas aleatorias en el fondo
+    const starsContainer = document.getElementById('stars-container');
+    for (let i = 0; i < 100; i++) {
+      let star = document.createElement('div');
+      star.className = 'star';
+      star.style.width = Math.random() * 3 + 'px';
+      star.style.height = star.style.width;
+      star.style.left = Math.random() * 100 + 'vw';
+      star.style.top = Math.random() * 100 + 'vh';
+      star.style.animationDuration = (Math.random() * 3 + 1) + 's';
+      star.style.animationDelay = Math.random() * 2 + 's';
+      starsContainer.appendChild(star);
+    }
+
+    // Control de Interacción y Audio
+    const polaroid = document.getElementById('polaroid');
+    const bgm = document.getElementById('bgm');
+    let isPlaying = false;
+
+    // Al tocar o pasar el mouse
+    function handleInteraction() {
+      polaroid.classList.add('active');
+      if (!isPlaying) {
+        bgm.volume = 0.3; // Volumen bajito romántico
+        bgm.play().catch(e => console.log("El navegador espera un tap más directo"));
+        isPlaying = true;
+      }
+    }
+
+    // Al soltar o quitar el mouse
+    function handleInteractionEnd() {
+      polaroid.classList.remove('active');
+    }
+
+    // Para PC
+    polaroid.addEventListener('mouseenter', handleInteraction);
+    polaroid.addEventListener('mouseleave', handleInteractionEnd);
+
+    // Para Celulares (Touch)
+    polaroid.addEventListener('touchstart', (e) => {
+      e.preventDefault(); 
+      handleInteraction();
+    });
+    polaroid.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      handleInteractionEnd();
+    });
+  </script>
+
+</body>
+</html>
